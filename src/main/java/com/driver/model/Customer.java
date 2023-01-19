@@ -1,14 +1,13 @@
 package com.driver.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +22,8 @@ public class Customer {
 
 	private String mobile;
 	private String password;
+
+	@OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+	List<TripBooking> tripBookingList;
+
 }

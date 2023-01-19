@@ -1,10 +1,6 @@
 package com.driver.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +21,10 @@ public class TripBooking {
 	private int bill;
 
 	@ManyToOne
+	@JoinColumn
 	private Customer customer;
 
 	@ManyToOne
+	@JoinColumn
 	private Driver driver;
 }

@@ -67,6 +67,8 @@ public class CustomerServiceImpl implements CustomerService {
 	public TripBooking bookTrip(int customerId, String fromLocation, String toLocation, int distanceInKm) throws Exception{
 		//Book the driver with lowest driverId who is free
 		TripBooking tripBooking = new TripBooking();
+
+		//Yahan prr cabs repo se all cabs mangwa sakte hein and then filter them out on this basis.
 		Driver driver = driverRepository.findByCabAvailable("YES").get(0);
 		if(driver == null){
 			throw new Exception("No cab available!");
@@ -79,7 +81,17 @@ public class CustomerServiceImpl implements CustomerService {
 		tripBooking.setToLocation(toLocation);
 		tripBooking.setDistanceInKm(distanceInKm);
 		tripBooking.setStatus(TripStatus.CONFIRMED);
-		tripBookingRepository.save(tripBooking);
+
+		//Adding this in customer's list of bookings as well. bidirectional mapping
+		customer.getTripBookingList().add(tripBooking);
+		customerRepository.save(customer); //saving the parent.
+
+		//Same this for driver
+		driver.getTripBookingList().add(tripBooking);
+		driverRepository.save(driver);
+
+		//tripBookingRepository.save(tripBooking); ab iski zrorat nhi hai as this is the child.
+
 		return tripBooking;
 	}
 
@@ -88,6 +100,9 @@ public class CustomerServiceImpl implements CustomerService {
 		TripBooking tripBooking = tripBookingRepository.findById(tripId).get();
 		tripBooking.setStatus(TripStatus.CANCELED);
 		tripBooking.setBill(0);
+
+		//customer and driver will have no changes in this.
+
 		tripBookingRepository.save(tripBooking);
 	}
 
@@ -99,5 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
 		int bill = tripBooking.getDriver().getCab().getPerKmRate()*tripBooking.getDistanceInKm();
 		tripBooking.setBill(bill);
 		tripBooking.getDriver().getCab().setAvailable("YES");
+
+		tripBookingRepository.save(tripBooking);
 	}
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +19,10 @@ public class Driver {
 	private String mobile;
 	private String password;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
 	private Cab cab;
+
+	@OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
+	List<TripBooking> tripBookingList;
 
 }
