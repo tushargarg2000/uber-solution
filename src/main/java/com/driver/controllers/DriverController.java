@@ -1,6 +1,8 @@
 package com.driver.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.driver.model.Driver;
@@ -15,8 +17,9 @@ public class DriverController {
 	DriverService driverService;
 	
 	@PostMapping(value = "/register")
-	public Driver registerDriver(@RequestBody Driver driver){
-		return driverService.register(driver);
+	public ResponseEntity<Void> registerDriver(@RequestParam String mobile, @RequestParam String password){
+		driverService.register(mobile, password);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/delete")

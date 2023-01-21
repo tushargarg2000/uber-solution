@@ -13,48 +13,44 @@ import com.driver.repository.DriverRepository;
 public class DriverServiceImpl implements DriverService {
 
 	@Autowired
-	DriverRepository driverRepository;
+	DriverRepository driverRepository3;
 
 	@Autowired
-	CabRepository cabRepository;
+	CabRepository cabRepository3;
 
-	//Shyd yeh register driver waala code aapne shi krdia tha....so not rectifying it.
 	@Override
-	public Driver register(Driver driver){
-		return driverRepository.save(driver);
+	public void register(String mobile, String password){
+		//Save a driver in the database having given details and a cab with ratePerKm as 10 and availability as True.
+		Driver driver = new Driver();
+		driver.setMobile(mobile);
+		driver.setPassword(password);
+		Cab cab = new Cab();
+		cab.setPerKmRate(10);
+		cab.setAvailable(Boolean.TRUE);
+		cab.setDriver(driver);
+		driverRepository3.save(driver);
 	}
 
-
-	//ismein bhi deleteById waale case testing k tym
 	@Override
 	public void removeDriver(int driverId){
-		Driver driver = driverRepository.findById(driverId).get();
-		driverRepository.delete(driver);
+		// Delete driver without using deleteById function
+		Driver driver = driverRepository3.findById(driverId).get();
+		driverRepository3.delete(driver);
 	}
-
-
 
 	@Override
 	public void updateStatus(int driverId){
-//		Driver driver = driverRepository.findById(driverId).get();
-//
-//		String currentStatus = driver.getCab().getAvailable();
-//		String newStatus = "YES";
-//		if(currentStatus == "YES"){
-//			newStatus = "NO";
-//		}
-//		driver.getCab().setAvailable(newStatus);
-//		driverRepository.save(driver);
-
-		//students might be going through the normal route of making changes directly in the cabRepository iteself.
+		//Update the status of respective car to unavailable
 
 
-		//getter setter ka check krlena....probably allArgs and noArgs nhi chlenge...so will have to write them manually
-		//And also
-		Driver driver = driverRepository.findById(driverId).get();
+//		Driver driver = driverRepository3.findById(driverId).get();
+//		driver.getCab().setAvailable(Boolean.FALSE);
+//		driverRepository3.save(driver);
+
+		Driver driver = driverRepository3.findById(driverId).get();
 		Cab cab = driver.getCab();
 
-		cab.setAvailable("NO");
-		cabRepository.save(cab);
+		cab.setAvailable(Boolean.FALSE);
+		cabRepository3.save(cab);
 	}
 }

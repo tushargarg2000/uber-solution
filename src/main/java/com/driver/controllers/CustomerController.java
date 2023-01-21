@@ -20,35 +20,14 @@ public class CustomerController {
 	CustomerService customerService;
 
 	@PostMapping("/register")
-	public Customer registerCustomer(@RequestBody Customer customer){
-		Customer newUser = customerService.register(customer);
-		return newUser;
-	}
-
-	@GetMapping("/customerList")
-	public List<Customer> getAllCustomers() {
-		List<Customer> list = customerService.getAllCustomers();
-		return list;
-	}
-
-	@PutMapping("/updatePassword")
-	public Customer updateCustomerPassword(@PathVariable Integer customerId, @RequestParam String password){
-		return customerService.updatePassword(customerId, password);
+	public ResponseEntity<Void> registerCustomer(@RequestBody Customer customer){
+		customerService.register(customer);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete")
 	public void deleteCustomer(@PathVariable Integer customerId){
 		customerService.deleteCustomer(customerId);
-	}
-
-	@GetMapping("/availableCabs")
-	public List<Driver> availableDrivers(){
-		return customerService.getAvailableDrivers();
-	}
-
-	@GetMapping("/allCabs")
-	public List<Driver> getListForAllDrivers(){
-		return customerService.getAllDrivers();
 	}
 
 	@PostMapping("/bookTrip")

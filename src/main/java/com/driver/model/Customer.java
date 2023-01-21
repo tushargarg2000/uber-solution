@@ -2,17 +2,9 @@ package com.driver.model;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class Customer {
 
@@ -24,6 +16,37 @@ public class Customer {
 	private String password;
 
 	@OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-	List<TripBooking> tripBookingList;
+	List<TripBooking> tripBookingList = new ArrayList<>();
 
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<TripBooking> getTripBookingList() {
+		return tripBookingList;
+	}
+
+	public void setTripBookingList(List<TripBooking> tripBookingList) {
+		this.tripBookingList = tripBookingList;
+	}
 }

@@ -3,6 +3,8 @@ package com.driver.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.driver.model.Admin;
-import com.driver.model.Customer;
-import com.driver.model.Driver;
+import com.driver.model.*;
 import com.driver.services.AdminService;
 
 @RestController
@@ -25,13 +25,15 @@ public class AdminController {
 	AdminService adminService;
 
 	@PostMapping("/register")
-	public Admin registerAdmin(@RequestBody Admin admin){
-		return adminService.adminRegister(admin);
+	public ResponseEntity<Void> registerAdmin(@RequestBody Admin admin){
+		adminService.adminRegister(admin);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
-	public Admin updateAdminPassword(@PathVariable Integer adminId, @PathVariable String password){
-		return adminService.updatePassword(adminId, password);
+	public ResponseEntity<Admin> updateAdminPassword(@PathVariable Integer adminId, @PathVariable String password){
+		Admin updatedAdmin = adminService.updatePassword(adminId, password);
+		return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete")

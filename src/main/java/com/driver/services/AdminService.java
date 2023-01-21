@@ -8,7 +8,7 @@ import com.driver.model.Driver;
 
 public interface AdminService {
 
-	public Admin adminRegister(Admin admin);
+	public void adminRegister(Admin admin);
 
 	public Admin updatePassword(Integer adminId, String password);
 

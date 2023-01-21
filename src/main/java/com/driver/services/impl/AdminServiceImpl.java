@@ -17,42 +17,47 @@ import com.driver.repository.DriverRepository;
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
-	AdminRepository adminRepository;
+	AdminRepository adminRepository1;
 
 	@Autowired
-	DriverRepository driverRepository;
+	DriverRepository driverRepository1;
 
 	@Autowired
-	CustomerRepository customerRepository;
+	CustomerRepository customerRepository1;
 
 	@Override
-	public Admin adminRegister(Admin admin) {
-		return adminRepository.save(admin);
+	public void adminRegister(Admin admin) {
+		//Save the admin in the database
+		adminRepository1.save(admin);
 	}
 
 	@Override
 	public Admin updatePassword(Integer adminId, String password) {
-		Admin admin = adminRepository.findById(adminId).get();
+		//Update the password of admin with given id
+		Admin admin = adminRepository1.findById(adminId).get();
 		admin.setPassword(password);
-		Admin updated = adminRepository.save(admin);
-		return updated;
+		adminRepository1.save(admin);
+		return admin;
 	}
 
 	@Override
 	public void deleteAdmin(int adminId){
-		Admin admin = adminRepository.findById(adminId).get();
-		adminRepository.delete(admin);
+		// Delete admin without using deleteById function
+		Admin admin = adminRepository1.findById(adminId).get();
+		adminRepository1.delete(admin);
 	}
 
 	@Override
 	public List<Driver> getListOfDrivers() {
-		List<Driver> listOfDrivers = driverRepository.findAll();
+		//Find the list of all drivers
+		List<Driver> listOfDrivers = driverRepository1.findAll();
 		return listOfDrivers;
 	}
 
 	@Override
 	public List<Customer> getListOfCustomers() {
-		List<Customer> listOfCustomers = customerRepository.findAll();
+		//FInd the list of all customers
+		List<Customer> listOfCustomers = customerRepository1.findAll();
 		return listOfCustomers;
 	}
 
