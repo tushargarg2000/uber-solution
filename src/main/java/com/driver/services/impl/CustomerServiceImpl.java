@@ -46,12 +46,17 @@ public class CustomerServiceImpl implements CustomerService {
 		//Avoid using SQL
 		TripBooking tripBooking = new TripBooking();
 		Driver driver = null;
+
+		//1. Do the basic conditions filter
+
 		List<Driver> allDrivers = driverRepository2.findAll();
 //		if(allDrivers == null){
 //			throw new Exception("No cab available!");
 //		}
 
 		for(Driver driver1: allDrivers){
+
+			//Finding if they are available or not
 			if(driver1.getCab().getAvailable() == Boolean.TRUE) {
 				if((driver == null) || (driver.getDriverId() > driver1.getDriverId())){
 					driver = driver1;
@@ -61,6 +66,9 @@ public class CustomerServiceImpl implements CustomerService {
 		if(driver == null){
 			throw new Exception("No cab available!");
 		}
+
+
+		//2. Set the attributes of the entity layer
 		Customer customer = customerRepository2.findById(customerId).get();
 		tripBooking.setCustomer(customer);
 		tripBooking.setDriver(driver);
@@ -68,8 +76,14 @@ public class CustomerServiceImpl implements CustomerService {
 		tripBooking.setFromLocation(fromLocation);
 		tripBooking.setToLocation(toLocation);
 		tripBooking.setDistanceInKm(distanceInKm);
+
+		int ratePerKm = driver.getCab().getPerKmRate();
+
+		tripBooking.setBill(distanceInKm*10);
+
 		tripBooking.setStatus(TripStatus.CONFIRMED);
 
+		//Set the bidirectional mapping
 		customer.getTripBookingList().add(tripBooking);
 		customerRepository2.save(customer); //saving the parent.
 
